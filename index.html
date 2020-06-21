@@ -1,75 +1,100 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
 
-    <head>
-        <title>Monster Slayer</title>
-        <script src="https://npmcdn.com/vue/dist/vue.js"></script>
-        <link rel="stylesheet" href="css/foundation.min.css">
-        <link rel="stylesheet" href="css/app.css">
-    </head>
-
-    <body>
-        <div id="app">
-            <section class="row">
-                <div class="small-6 columns">
-                    <h1 class="text-center">YOU</h1>
-                    <div class="healthbar">
-                        <div class="healthbar text-center" style="margin: 0; color: white;"
-                            :class="{danger: playerLowHealth, healthy: !playerLowHealth}" :style="{width:
+  <body>
+    <div id="app">
+      <section class="row">
+        <div class="small-6 columns">
+          <h1 class="text-center">YOU</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="margin: 0; color: white;"
+              :class="{danger: playerLowHealth, healthy: !playerLowHealth}"
+              :style="{width:
                             playerData.health +
-                            '%'}">
-                            {{ playerData.health }}
-                        </div>
-                    </div>
-                    <div class="manabar">
-                        <div class="manabar text-center" style="background-color: blue; margin: 0; color: white;"
-                            :style="{width: playerData.mana + '%'}">
-                            {{ playerData.mana  }}
-                        </div>
-                    </div>
-                </div>
-                <div class="small-6 columns">
-                    <h1 class="text-center">MONSTER</h1>
-                    <div class="healthbar">
-                        <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;"
-                            :style="{width: monsterData.health + '%'}">
-                            {{ monsterData.health  }}
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="row controls" v-if="!isGameOn || playerData.health <= 0 || monsterData.health <= 0">
-                <div class="small-12 columns">
-                    <button id="start-game" @click="startGame">START NEW GAME</button>
-                </div>
-            </section>
-            <section class="row controls" v-if="isGameOn">
-                <div class="small-12 columns">
-                    <button id="attack" @click="attack" :disabled="isGameFinished">ATTACK</button>
-                    <button id="special-attack" @click="specialAttack"
-                        :disabled="playerData.mana - playerData.specialAttackManaCost <= 0 || isGameFinished">
-                        SPECIAL ATTACK (Mana cost: {{ playerData.specialAttackManaCost }})
-                    </button>
-                    <button id="heal" @click="heal" :disabled="playerData.mana - playerData.healManaCost <= 0 ||
-                            playerData.health==playerData.maxHealth || isGameFinished">
-                        HEAL (Mana cost: {{ playerData.healManaCost }})
-                    </button>
-                    <button id=" give-up" @click="giveUp" :disabled="isGameFinished">GIVE UP</button>
-                </div>
-            </section>
-            <section class="row log" v-if="isGameOn && turns.length > 0">
-                <div class="small-12 columns">
-                    <ul>
-                        <li v-for="turn in turns"
-                            :class="{'player-log': turn.isPlayerTurn, 'monster-log': !turn.isPlayerTurn}">
-                            {{ turn.log }}
-                        </li>
-                    </ul>
-                </div>
-            </section>
+                            '%'}"
+            >
+              {{ playerData.health }}
+            </div>
+          </div>
+          <div class="manabar">
+            <div
+              class="manabar text-center"
+              style="background-color: blue; margin: 0; color: white;"
+              :style="{width: playerData.mana + '%'}"
+            >
+              {{ playerData.mana }}
+            </div>
+          </div>
         </div>
+        <div class="small-6 columns">
+          <h1 class="text-center">MONSTER</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="margin: 0; color: white;"
+              :style="{width: monsterData.health + '%'}"
+              :class="{danger: monsterLowHealth, healthy: !monsterLowHealth}"
+            >
+              {{ monsterData.health }}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="row controls"
+        v-if="!isGameOn || playerData.health <= 0 || monsterData.health <= 0"
+      >
+        <div class="small-12 columns">
+          <button id="start-game" @click="startGame">START NEW GAME</button>
+        </div>
+      </section>
+      <section class="row controls" v-if="isGameOn">
+        <div class="small-12 columns">
+          <button id="attack" @click="attack" :disabled="isGameFinished">
+            ATTACK
+          </button>
+          <button
+            id="special-attack"
+            @click="specialAttack"
+            :disabled="playerData.mana - playerData.specialAttackManaCost <= 0 || isGameFinished"
+          >
+            SPECIAL ATTACK (Mana cost: {{ playerData.specialAttackManaCost }})
+          </button>
+          <button
+            id="heal"
+            @click="heal"
+            :disabled="playerData.mana - playerData.healManaCost <= 0 ||
+                            playerData.health==playerData.maxHealth || isGameFinished"
+          >
+            HEAL (Mana cost: {{ playerData.healManaCost }})
+          </button>
+          <button id=" give-up" @click="giveUp" :disabled="isGameFinished">
+            GIVE UP
+          </button>
+        </div>
+      </section>
+      <section class="row log" v-if="isGameOn && turns.length > 0">
+        <div class="small-12 columns">
+          <ul>
+            <li
+              v-for="turn in turns"
+              :class="{'player-log': turn.isPlayerTurn, 'monster-log': !turn.isPlayerTurn}"
+            >
+              {{ turn.log }}
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
 
-        <script src="app.js"></script>
-    </body>
-
+    <script src="app.js"></script>
+  </body>
 </html>
